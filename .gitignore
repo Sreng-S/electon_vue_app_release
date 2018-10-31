@@ -9,3 +9,12 @@ npm-debug.log
 npm-debug.log.*
 thumbs.db
 !.gitkeep
+
+.idea/codeStyles/
+.idea/inspectionProfiles/
+.idea/medivrx_sails_electron_vue.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/watcherTasks.xml
