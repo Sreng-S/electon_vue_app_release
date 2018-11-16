@@ -8,7 +8,7 @@
 /* eslint-disable */
 
 // Install `electron-debug` with `devtron`
-require('electron-debug')({ showDevTools: true })
+// require('electron-debug')({ showDevTools: true })
 
 // Install `vue-devtools`
 require('electron').app.on('ready', () => {
@@ -20,5 +20,15 @@ require('electron').app.on('ready', () => {
     })
 })
 
+require('electron').app.on("certificate-error", (event, webContents, url, err, certificate, cb) => {
+  if (err) console.log(err)
+  /* eslint-disable */
+  if (url === 'https://104.45.154.157/') {
+    event.preventDefault()
+    cb(true)
+  } else {
+    cb(false)
+  }
+})
 // Require `main` process to boot app
 require('./index')
