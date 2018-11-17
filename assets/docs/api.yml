@@ -1,0 +1,541 @@
+swagger: '2.0'
+info:
+  description: This is MediVRx Server REST API documentation.
+  version: 1.0.0
+  title: MediVRx Server REST API
+  contact:
+    email: dunhao.z@protonmail.com
+
+  license:
+    name: Sail.js - MediVRx
+    url: http://localhost:1337
+
+tags:
+- name: Teacher
+  description: Teacher relative REST API
+- name: Student
+  description: Student relative REST API
+- name: Modules
+  description: Modules relative REST API
+
+paths:
+
+  /teacher/register:
+    post:
+      tags:
+      - Teacher
+      operationId: teacher-register
+      description: Create a teacher
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: json
+        description: |
+          Json Data of teacher to create
+        schema:
+          type: object
+          required:
+          - email
+          - password
+          - username
+          properties:
+            email:
+              type: string
+              format: email
+              example: teacher6@getmedi.com
+            password:
+              type: string
+              example: medip@ss
+            username:
+              type: string
+              example: teacher 6
+      responses:
+        200:
+          description: Registered teacher successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  teacher_id:
+                    type: string
+                    example: 547fa090-c8bb-11e8-8ca8-0370e4e4f51b
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNTQ3ZmEwOTAtYzhiYi0xMWU4LThjYTgtMDM3MGU0ZTRmNTFiIiwiZXhwIjoxNTM4NzYzMTczLCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM4NzU5NTczfQ.baD2_NlvJvuXJD0iAVstqyGHpeoJLhka_dyA9KyD7C4
+        400:
+          description: Invalid input, object invalid
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              response_code:
+                type: number
+                example: 1001
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: This email is already exist
+
+  /teacher/login:
+    put:
+      tags:
+      - Teacher
+      operationId: teacher-login
+      description: Login as teacher
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: json
+        description: |
+          Json Data of teacher login information
+        schema:
+          type: object
+          required:
+          - username
+          - password
+          properties:
+            username:
+              type: string
+              format: email
+              example: teacher2@getmedi.com
+            password:
+              type: string
+              example: medip@ss
+      responses:
+        200:
+          description: Logged in teacher successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  teacher_id:
+                    type: string
+                    example: 690e7960-c7e3-11e8-949d-edc3d1cb831e
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjkwZTc5NjAtYzdlMy0xMWU4LTk0OWQtZWRjM2QxY2I4MzFlIiwiZXhwIjoxNTM4ODQ1MzI3LCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM4NzU4OTI3fQ.uGtnWSMVu4S1by85vETXJU_P6wrlAj2NyuFQ39le8Pk
+        400:
+          description: Invalid input, object invalid
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              response_code:
+                type: number
+                example: 1001
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Username is required.
+
+  /teacher/start-session:
+    post:
+      tags:
+      - Teacher
+      operationId: teacher-start-session
+      description: Start a teacher session
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: json
+        description: |
+          Json Data of teacher information to start session
+        schema:
+          type: object
+          required:
+          - teacher_id
+          - accessToken
+          properties:
+            teacher_id:
+              type: string
+              example: 85f4f870-c7f1-11e8-b525-b9eef5e519ab
+            accessToken:
+              type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjkwZTc5NjAtYzdlMy0xMWU4LTk0OWQtZWRjM2QxY2I4MzFlIiwiZXhwIjoxNTM4ODQ2MzE5LCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM4NzU5OTE5fQ.HSHNwaIUsXE93JgDShjmr2uTLznpmOP5kt5yWhUA7jM
+      responses:
+        200:
+          description: Started teacher session successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  teacher_session:
+                    type: string
+                    example: d4f8b5c0-c8c2-11e8-8ca8-0370e4e4f51b
+        400:
+          description: Invalid input, object invalid
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              response_code:
+                type: number
+                example: 1002
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid token provided
+
+  /student/register:
+    post:
+      tags:
+      - Student
+      operationId: student-register
+      description: Create a student
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: json
+        description: |
+          Json Data of student to create
+        schema:
+          type: object
+          required:
+          - device_id
+          properties:
+            device_id:
+              type: string
+              example: 123A-31D2-3F12-CC76
+      responses:
+        200:
+          description: Registered student successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  student_session:
+                    type: string
+                    example: 1a808670-c811-11e8-89a2-3d068ee4d500
+                  teacher_session:
+                    type: string
+                    example: d4f8b5c0-c8c2-11e8-8ca8-0370e4e4f51b
+        400:
+          description: Invalid input, object invalid
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              response_code:
+                type: number
+                example: 1003
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Device ID is required.
+
+  /student/start-session:
+    post:
+      tags:
+      - Student
+      operationId: student-start-session
+      description: Start a student session
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: json
+        description: |
+          Json Data of student session to start
+        schema:
+          type: object
+          required:
+          - student_session
+          properties:
+            student_session:
+              type: string
+              example: 1a808670-c811-11e8-89a2-3d068ee4d500
+      responses:
+        200:
+          description: Started student session successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Session started
+        400:
+          description: Invalid input, object invalid
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              response_code:
+                type: number
+                example: 1004
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Student session is required.
+
+  /modules/quiz-data:
+    get:
+      tags:
+      - Modules
+      operationId: get-quiz-data
+      description: Get quiz data list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: module_name
+        type: string
+        required: true
+        description: Module name to get quiz data
+      responses:
+        200:
+          description: Get the quiz list successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                    example:  [
+                    {
+                      "id": 1,
+                      "text": "Which guidelines or recommendations do you refer to for managing hyperlipidemia in patients post-ACS?",
+                      "answers": [
+                      {
+                        "text": "A. American College of Cardiology/American Heart Association (ACC/AHA) guidelines"
+                      },
+                      {
+                        "text": "B. National Lipid Association (NLA) recommendations"
+                      },
+                      {
+                        "text": "C. European (ESC/EAS) guidelines"
+                      },
+                      {
+                        "text": "D. American Association of Clinical Endocrinologists/American College of Endocrinology (AACE/ACE)"
+                      },
+                      {
+                        "text": "E. None of the above"
+                      }
+                      ],
+                      "correct_answer": "0"
+                    },
+                    {
+                      "id": 2,
+                      "text": "What are your cholesterol goals in a patient who already has an LDL-C <70 mg/dL at the time of ACS?",
+                      "answers": [
+                      {
+                        "text": "A. Decrease LDL-C as low as you can go with combination therapy"
+                      },
+                      {
+                        "text": "B. No additional therapy needed"
+                      },
+                      {
+                        "text": "C. Ensure that the patient is on a high intensity statin even if already <70mg/dL LDL-C"
+                      },
+                      {
+                        "text": "D. Ensure that the patient is on a statin"
+                      },
+                      {
+                        "text": "E. None of the above"
+                      }
+                      ],
+                      "correct_answer": "3"
+                    }
+                    ]
+                  package:
+                    type: object
+                    properties:
+                      link:
+                        type: string
+                        example: 192.168.1.64/modules/module1.unity3d
+        400:
+          description: Invalid input, object invalid
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: true
+              response_code:
+                type: number
+                example: 1005
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Module name is required.
+
+  /database/reset:
+    post:
+      tags:
+      - Utility
+      operationId: database-reset
+      description: Reset database
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Reset all data in database successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reset Database!
+
+  /database/checkSync:
+    get:
+      tags:
+      - Utility
+      operationId: database-check-sync
+      description: Check database sync
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Checked database sync status successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Status: Online!'
+
+  /database/sync:
+    post:
+      tags:
+      - Utility
+      operationId: database-sync
+      description: Sync database with azure
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Synced database with azure successfully
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+                example: false
+              response_code:
+                type: number
+                example: 1000
+              data:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Sync Database!'
+
+host: localhost:1337
+basePath: /
+schemes:
+- http
+- https

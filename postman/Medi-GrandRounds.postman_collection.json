@@ -1,0 +1,425 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Medi-GrandRounds",
+		"_postman_id": "23a29242-9117-8a98-db91-35ca990b87be",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "teacher/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Received access token\", function () {",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"    pm.response.to.have.jsonBody(\"accessToken\");",
+							"    var json = pm.response.json();",
+							"    pm.environment.set(\"accessToken\", json.accessToken);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://192.168.1.65:1337/teacher/login",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"teacher1@getmedi.com\",\r\n  \"password\": \"medip@ss\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "cccc895a-2731-4ad5-bf00-8ffae7c8bfed",
+					"name": "teacher/login",
+					"originalRequest": {
+						"url": "http://192.168.1.65:1337/teacher/login",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"teacher1@getmedi.com\",\r\n  \"password\": \"medip@ss\"\r\n}"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"name": "connection",
+							"key": "connection",
+							"value": "keep-alive",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"name": "content-length",
+							"key": "content-length",
+							"value": "353",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"name": "content-type",
+							"key": "content-type",
+							"value": "application/json; charset=utf-8",
+							"description": "The mime type of this content"
+						},
+						{
+							"name": "date",
+							"key": "date",
+							"value": "Sat, 13 Oct 2018 21:11:56 GMT",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"name": "etag",
+							"key": "etag",
+							"value": "W/\"161-A5WqeMFfijS6lCSufpA9+K/x9vo\"",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"name": "x-powered-by",
+							"key": "x-powered-by",
+							"value": "Sails <sailsjs.com>",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"responseTime": 140,
+					"body": "{\n  \"error\": false,\n  \"response_code\": 1000,\n  \"data\": {\n    \"teacher_id\": \"567b4b30-ceea-11e8-9a76-6bba944b1b02\",\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNTY3YjRiMzAtY2VlYS0xMWU4LTlhNzYtNmJiYTk0NGIxYjAyIiwiZXhwIjoxNTM5NTUxNTE2LCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM5NDY1MTE2fQ.H0oaduiHZmQEF41agk3rcmHt3zaO-Mal52AfgIO11Fg\"\n  }\n}"
+				}
+			]
+		},
+		{
+			"name": "teacher/start-session",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Registered device\", function () {",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.string;",
+							"    pm.response.to.have.body(\"\\\"successful operation\\\"\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://192.168.1.65:1337/teacher/start-session",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"teacher_id\": \"567b4b30-ceea-11e8-9a76-6bba944b1b02\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNTY3YjRiMzAtY2VlYS0xMWU4LTlhNzYtNmJiYTk0NGIxYjAyIiwiZXhwIjoxNTM5NTU0MDI1LCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM5NDY3NjI1fQ.KoE_0K2hF2G7sD28QvR7bL3_uvZdd-gRCdGNIKm4y08\"\n}"
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "cbc2e37d-cacb-4aa9-8173-993988fbbe72",
+					"name": "teacher/start-session",
+					"originalRequest": {
+						"url": "http://192.168.1.65:1337/teacher/start-session",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"teacher_id\": \"567b4b30-ceea-11e8-9a76-6bba944b1b02\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNTY3YjRiMzAtY2VlYS0xMWU4LTlhNzYtNmJiYTk0NGIxYjAyIiwiZXhwIjoxNTM5NTUxNTE2LCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM5NDY1MTE2fQ.H0oaduiHZmQEF41agk3rcmHt3zaO-Mal52AfgIO11Fg\"\n}"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"name": "connection",
+							"key": "connection",
+							"value": "keep-alive",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"name": "content-length",
+							"key": "content-length",
+							"value": "124",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"name": "content-type",
+							"key": "content-type",
+							"value": "application/json; charset=utf-8",
+							"description": "The mime type of this content"
+						},
+						{
+							"name": "date",
+							"key": "date",
+							"value": "Sat, 13 Oct 2018 21:16:35 GMT",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"name": "etag",
+							"key": "etag",
+							"value": "W/\"7c-ZRaFhARyXmjVMVp3Z5uuDATZAlA\"",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"name": "x-powered-by",
+							"key": "x-powered-by",
+							"value": "Sails <sailsjs.com>",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"responseTime": 96,
+					"body": "{\n  \"error\": false,\n  \"response_code\": 1000,\n  \"data\": {\n    \"teacher_session\": \"567bc060-ceea-11e8-9a76-6bba944b1b02\"\n  }\n}"
+				}
+			]
+		},
+		{
+			"name": "student/register",
+			"request": {
+				"url": "http://192.168.1.65:1337/student/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"device_id\": \"123A31D23F12CC76WER3QW12FG54JK28\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "1319ccd3-bedb-4ead-aee9-3b1add42e10c",
+					"name": "student/register",
+					"originalRequest": {
+						"url": "http://192.168.1.65:1337/student/register",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "",
+								"warning": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"device_id\": \"123A31D23F12CC76WER3QW12FG54JK28\"\r\n}"
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"name": "connection",
+							"key": "connection",
+							"value": "keep-alive",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"name": "content-length",
+							"key": "content-length",
+							"value": "187",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"name": "content-type",
+							"key": "content-type",
+							"value": "application/json; charset=utf-8",
+							"description": "The mime type of this content"
+						},
+						{
+							"name": "date",
+							"key": "date",
+							"value": "Sat, 13 Oct 2018 21:22:55 GMT",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"name": "etag",
+							"key": "etag",
+							"value": "W/\"bb-QYC9vEz8B5NjehBNr6I1czglJ9Q\"",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"name": "x-powered-by",
+							"key": "x-powered-by",
+							"value": "Sails <sailsjs.com>",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"responseTime": 104,
+					"body": "{\n  \"error\": false,\n  \"response_code\": 1000,\n  \"data\": {\n    \"student_session\": \"56790140-ceea-11e8-9a76-6bba944b1b02\",\n    \"teacher_session\": \"567bc060-ceea-11e8-9a76-6bba944b1b02\"\n  }\n}"
+				}
+			]
+		},
+		{
+			"name": "student/start-session",
+			"request": {
+				"url": "http://192.168.1.65:1337/student/start-session",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"student_id\": \"7f437229-3185-4fd6-8067-19bd6e5008d4\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "student/collect-answer",
+			"request": {
+				"url": "http://192.168.1.65:1337/student/collect-answer",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event_id\": \"DCV Forum - Paris\",\n   \"student_session\": \"f7dd345e-93f4-41fb-b730-ab30c3c4a312\",\n   \"module_name\": \"Module1\",\n   \"question_text\": \"Which guidelines or recommendations do you refer to for managing hyperlipidemia in patients post-ACS?\",\n   \"answer_text\": \"A. American College of Cardiology/American Heart Association (ACC/AHA) guidelines\",\n   \"answer_time\": \"00:00:10\",\n   \"answer_correctness\": \"true\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "student/end-session",
+			"request": {
+				"url": "http://192.168.1.65:1337/student/end-session",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"student_session\": \"e94a8a4e-c4e2-4b6a-afe2-bb4dffacb485\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "teacher/end-session",
+			"request": {
+				"url": "http://192.168.1.65:1337/teacher/end-session",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"teacher_session\": \"8bb890b0-d006-11e8-a106-a7cd272d59a7\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWFmNjU1ZjAtZDAwMy0xMWU4LWI0NzQtZGQ0ZmQxMTBmZjMxIiwiZXhwIjoxNTM5NjQ1MTA3LCJkYXRhIjoiZm9vYmFyIiwiaWF0IjoxNTM5NTU4NzA3fQ.l4POlQMJ1S2e8qOK_WAPoYJ15oPS6QIQ8uYpQI1n6_w\"\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "modules/quiz-data",
+			"request": {
+				"url": {
+					"raw": "http://192.168.1.65:1337/modules/quiz-data?module_name=module1",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"1",
+						"65"
+					],
+					"port": "1337",
+					"path": [
+						"modules",
+						"quiz-data"
+					],
+					"query": [
+						{
+							"key": "module_name",
+							"value": "module1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

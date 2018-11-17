@@ -1,28 +1,69 @@
-# medivrx
+# MediVRx-Unity-MediaServer
 
-> An electron-vue project
+This is the MediVRx server configuration designed to handle data collection and content section storage.
 
-#### Build Setup
+# Installation
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-# run unit & end-to-end tests
-npm test
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
+## Project setup
 
 ```
+npm install
+```
 
----
+## Sails server
+```
+sails lift or node app.js
+```
+> NODE_ENV=production node app.js
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[8fae476](https://github.com/SimulatedGREG/electron-vue/tree/8fae4763e9d225d3691b627e83b9e09b56f6c935) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+## Real-time compilation in dev environment
+```
+npm install forever -g
+npm install forever --save-dev
+forever -w start app.js
+forever logs app.js -f
+```
+
+## Electron 
+
+### Application config
+- Development
+> when development env, create `config/local.js` file and edit like this
+```
+module.exports = {
+  ssl: {
+      ca: require('fs').readFileSync(require('path').resolve(__dirname, '../config/ssl/rootCA.crt')),
+      key: require('fs').readFileSync(require('path').resolve(__dirname, '../config/ssl/server.key')),
+      cert: require('fs').readFileSync(require('path').resolve(__dirname, '../config/ssl/server.crt'))
+    },
+  
+    baseUrl: 'https://your_ip',
+    explicitHost: 'your_ip',
+    port: 443,
+}
+```
+It's not working with `localhost`.
+
+- Production
+```
+  baseUrl: 'https://104.45.154.157',
+  explicitHost: '104.45.154.157',
+```
+
+
+### App startup
+```
+npm start
+```
+then will running the commands both `electron .` and `sails lift` 
+
+### Build up
+```
+npm run dist
+```
+app location is `./dist/mac`.
+
+## REST API Documentation
+```
+https://localhost/docs
+```
