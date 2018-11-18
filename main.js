@@ -1,12 +1,15 @@
+
+const { autoUpdater } = require('electron-updater');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
-import { autoUpdater } from 'electron-updater'
 
 // development env
-// require('electron-reload')(__dirname, {
-//   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-// });
+if (process.env.NODE_ENV === 'development') {
+  require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+  });
+}
 
 ipcMain.on('terminal', (e, args) => {
   if (args.method === 'exit') {
@@ -29,8 +32,9 @@ app.on('certificate-error', (event, webContents, url, error, certificate, callba
 function createWindow() {
 
   let shouldQuit = makeSingleInstance();
+  const baseURL = 'https://104.45.154.157:443';
 
-  if (shouldQuit) return app.quit();
+  if (shouldQuit) {return app.quit();}
   mainWindow = new BrowserWindow({
     width: 600,
     height: 680,
@@ -41,67 +45,69 @@ function createWindow() {
     center: true
   });
 
-  mainWindow.on('closed', function() {
-    mainWindow = null
+  mainWindow.on('closed', () => {
+    mainWindow = null;
   });
 
   mainWindow.setMenu(null);
-  mainWindow.loadURL('https://104.45.154.157:443');
-  // initialize()
+  mainWindow.loadURL(baseURL);
+  initialize();
 }
 
 function initialize() {
   mainWindow.loadURL('https://104.45.154.157:443');
-  mainWindow.webContents.on('did-finish-load', function() {
-    mainWindow.focus()
-  })
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.focus();
+  });
 }
 
 app.disableHardwareAcceleration();
 
-app.on('quit', function() {
+app.on('quit', () => {
   sailsApp.lower(
-    function (err) {
+    (err) => {
       if (err) {
-        return console.log('Error occurred lowering Sails app: ', err)
+        return console.log('Error occurred lowering Sails app: ', err);
       }
       process.exit(err ? 1 : 0);
-      console.log('Sails app lowered successfully!')
+      console.log('Sails app lowered successfully!');
     }
-  )
+  );
 });
 
 app.on('ready', () => {
   createWindow();
 });
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
 });
 
-app.on('activate', function() {
+app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
 });
 
 autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
+  autoUpdater.quitAndInstall();
 });
 
 app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+  if (process.env.NODE_ENV === 'production') {
+    autoUpdater.checkForUpdates();
+  }
 });
 
 function makeSingleInstance() {
-  if (process.mas) return false;
+  if (process.mas) {return false;}
 
-  return app.makeSingleInstance(function () {
+  return app.makeSingleInstance(() => {
     if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus()
+      if (mainWindow.isMinimized()) {mainWindow.restore();}
+      mainWindow.focus();
     }
-  })
+  });
 }
