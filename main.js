@@ -29,10 +29,13 @@ app.on('certificate-error', (event, webContents, url, error, certificate, callba
   callback(true);
 });
 
+const baseURL = process.env.NODE_ENV === 'development'
+? 'http://localhost:1337'
+:'https://104.45.154.157:443';
+
 function createWindow() {
 
   let shouldQuit = makeSingleInstance();
-  const baseURL = 'https://104.45.154.157:443';
 
   if (shouldQuit) {return app.quit();}
   mainWindow = new BrowserWindow({
@@ -55,7 +58,7 @@ function createWindow() {
 }
 
 function initialize() {
-  mainWindow.loadURL('https://104.45.154.157:443');
+  mainWindow.loadURL(baseURL);
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.focus();
   });

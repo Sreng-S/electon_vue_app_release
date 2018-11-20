@@ -10,60 +10,40 @@ This is the MediVRx server configuration designed to handle data collection and 
 npm install
 ```
 
-## Sails server
-```
-sails lift or node app.js
-```
-> NODE_ENV=production node app.js
+# Development
 
-## Real-time compilation in dev environment
+1. Start sails server
+2. Run electron 
+
+## Development Server
 ```
-npm install forever -g
-npm install forever --save-dev
-forever -w start app.js
-forever logs app.js -f
+npm start or npm run dev
+```
+> running port: http://localhost:1337
+
+## Production Server
+```
+sudo pm2 start app.js
+```
+When app process is running, please restart with this command,
+```
+sudo pm2 stop app && pm2 start app
 ```
 
 ## Electron 
 
-### Application config
-- Development
-> when development env, create `config/local.js` file and edit like this
+### App running on local
 ```
-module.exports = {
-  ssl: {
-      ca: require('fs').readFileSync(require('path').resolve(__dirname, '../config/ssl/rootCA.crt')),
-      key: require('fs').readFileSync(require('path').resolve(__dirname, '../config/ssl/server.key')),
-      cert: require('fs').readFileSync(require('path').resolve(__dirname, '../config/ssl/server.crt'))
-    },
-  
-    baseUrl: 'https://your_ip',
-    explicitHost: 'your_ip',
-    port: 443,
-}
-```
-It's not working with `localhost`.
-
-- Production
-```
-  baseUrl: 'https://104.45.154.157',
-  explicitHost: '104.45.154.157',
+npm run electorn
 ```
 
-
-### App startup
+### App building
 ```
-npm start
+npm run build or npm run build:dir
 ```
-then will running the commands both `electron .` and `sails lift` 
-
-### Build up
-```
-npm run dist
-```
-app location is `./dist/mac`.
 
 ## REST API Documentation
 ```
-https://localhost/docs
+http://localhost:1337/docs
 ```
+
