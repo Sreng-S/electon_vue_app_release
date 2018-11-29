@@ -130,6 +130,7 @@ module.exports = {
       Modules.publish([{id: 'subscribe-download-status'}], {
         status: 'downloading',
         ip: ip,
+        filename: filename,
       }, req);
 
     } else {

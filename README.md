@@ -14,14 +14,15 @@ npm install
 
 1. Start sails server
 2. Run electron 
-
-## Development Server
+3. Both
+`npm start or npm run dev`
+## Sails Server
 ```
-npm start or npm run dev
+npm run serve
 ```
 > running port: http://localhost:1337
 
-## Production Server
+Production Server
 ```
 sudo pm2 start app.js
 ```

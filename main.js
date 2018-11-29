@@ -1,8 +1,9 @@
 
 const { autoUpdater } = require('electron-updater');
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, protocol} = require('electron');
 const path = require('path');
 const url = require('url');
+protocol.registerStandardSchemes(['file']);
 
 // development env
 if (process.env.NODE_ENV === 'development') {
@@ -29,9 +30,11 @@ app.on('certificate-error', (event, webContents, url, error, certificate, callba
   callback(true);
 });
 
-const baseURL = process.env.NODE_ENV === 'development'
-? 'http://localhost:1337'
-:'https://104.45.154.157:443';
+const baseURL = NODE_ENV='development' ? 'http://localhost:1337':url.format({
+  pathname: path.join(__dirname, '/static/index.html'),
+  protocol: 'file:',
+  slashes: true
+});
 
 function createWindow() {
 
@@ -39,12 +42,12 @@ function createWindow() {
 
   if (shouldQuit) {return app.quit();}
   mainWindow = new BrowserWindow({
-    width: 600,
-    height: 680,
+    width: 620,
+    height: 690,
     backgroundColor: '#000000',
-    resizable: false,
+    resizable: true,
     icon: path.join(__dirname, 'images/logo.png.icns'),
-    title: 'MediVRx',
+    title: 'MediVRx Server',
     center: true
   });
 
@@ -52,13 +55,14 @@ function createWindow() {
     mainWindow = null;
   });
 
+  mainWindow.webContents.openDevTools();
   mainWindow.setMenu(null);
-  mainWindow.loadURL(baseURL);
   initialize();
 }
 
 function initialize() {
   mainWindow.loadURL(baseURL);
+
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.focus();
   });
@@ -73,12 +77,21 @@ app.on('quit', () => {
         return console.log('Error occurred lowering Sails app: ', err);
       }
       process.exit(err ? 1 : 0);
-      console.log('Sails app lowered successfully!');
+      // console.log('Sails app lowered successfully!');
     }
   );
 });
 
 app.on('ready', () => {
+  // protocol.unregisterProtocol('file');
+  // protocol.registerHttpProtocol('file', (request, callback) => {
+  //   let url = request.url.substr(8);
+  //   callback({
+  //     url: 'localhost:1337' + url
+  //   })
+  // }, (error) => {
+  //   if (error) console.error('Failed to register protocol', error);
+  // });
   createWindow();
 });
 

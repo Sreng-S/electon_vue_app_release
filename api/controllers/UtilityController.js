@@ -244,11 +244,20 @@ module.exports = {
   },
 
   getIP: async function (req, res) {
-
     const os = require('os');
     const iFaces = os.networkInterfaces();
-    const prod_ip = '104.45.154.157';
+    const WiFiControl = require('wifi-control');
+    const portScanner = require('portscanner');
+
+    const azure_ip = '104.45.154.157';
+    const target_ip = '192.168.137.1';
+    const photon_ip = 5505;
     let server_ips = [];
+    let wifi_interface = [];
+
+    let isFoundWifi = false;
+    let isFoundIP = false;
+    let isFoundPhoton = false;
 
     await Object.keys(iFaces).forEach((ifname) => {
       let alias = 0;
@@ -263,18 +272,70 @@ module.exports = {
       }
     });
 
-    if (!server_ips.length) {
-      server_ips.push(prod_ip);
-    }
-    console.log(server_ips);
-
-    return res.ok({
-      error: false,
-      response_code: 1000,
-      data: {
-        ip: server_ips,
-      },
+    //  Check Wifi SSID:
+    WiFiControl.init({
+      debug: true
     });
+    WiFiControl.scanForWiFi((err, response) => {
+      if (err) console.log(err);
+      wifi_interface = response.networks;
+      wifi_interface.forEach(aps => {
+        if (aps.ssid === 'MediVRx') {
+          isFoundWifi = true;
+          console.log('wifi: ', aps);
+        }
+      });
+    });
+
+    // Azure server ip assign
+    // if (!server_ips.length) {
+    //   server_ips.push(azure_ip);
+    // }
+
+    // Check the specific server ip
+    server_ips.forEach(ip => {
+      if (ip === target_ip) {
+        isFoundIP = true;
+        console.log('ip: ', ip);
+      }
+    });
+
+    // check the photon port
+    portScanner.checkPortStatus(photon_ip, target_ip, (err, status) => {
+      if (err) console.log(err);
+      if (status === 'open') {
+        isFoundPhoton = true;
+        console.log('port: ', status);
+      }
+    });
+
+    if (isFoundIP && isFoundWifi && isFoundPhoton) {
+      return res.ok({
+        error: false,
+        response_code: 1000,
+        data: {
+          ip: target_ip,
+          active_ip: isFoundIP,
+          wifi: wifi_interface,
+          active_wifi: isFoundWifi,
+          photon_port: photon_ip,
+          active_photon: isFoundPhoton,
+        },
+      });
+    } else {
+      return res.ok({
+        error: true,
+        response_code: 1006,
+        data: {
+          ip: target_ip,
+          active_ip: isFoundIP,
+          wifi: wifi_interface,
+          active_wifi: isFoundWifi,
+          photon_port: photon_ip,
+          active_photon: isFoundPhoton,
+        },
+      });
+    }
 
   }
 };
